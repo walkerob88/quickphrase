@@ -1,0 +1,19 @@
+[project]
+name = "quickphrase"
+version = "0.1.0"
+description = "System-wide text expander: type ;trigger anywhere and it becomes your phrase."
+requires-python = ">=3.9"
+dependencies = ["pynput>=1.7"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.gui-scripts]
+quickphrase = "quickphrase.gui:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["quickphrase*"]
