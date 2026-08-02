@@ -39,7 +39,26 @@ DEFAULT_PHRASES: Phrases = {
     "time": {"text": "{{time}}", "category": "Utilities"},
 }
 
-DEFAULT_SETTINGS: Settings = {"dark": False}
+DEFAULT_CATEGORIES = [
+    "General",
+    "Email",
+    "Hand & Wrist",
+    "Elbow",
+    "Shoulder",
+    "Knee",
+    "Hip",
+    "Arthroplasty",
+    "Foot & Ankle",
+    "Spine",
+    "Trauma",
+    "Oncology",
+    "Exam",
+    "Procedures",
+    "Templates",
+    "Utilities",
+]
+
+DEFAULT_SETTINGS: Settings = {"dark": False, "categories": DEFAULT_CATEGORIES}
 
 
 def config_dir() -> str:
@@ -92,10 +111,13 @@ class PhraseStore:
                         "text": str(entry["text"]),
                         "category": str(entry.get("category", DEFAULT_CATEGORY))
                                     or DEFAULT_CATEGORY,
+                        "favorite": bool(entry.get("favorite", False)),
                     }
             settings = dict(DEFAULT_SETTINGS)
             if isinstance(data.get("settings"), dict):
                 settings.update(data["settings"])
+            if not isinstance(settings.get("categories"), list):
+                settings["categories"] = list(DEFAULT_CATEGORIES)
             return phrases, settings
 
     def save(self, phrases: Phrases, settings: Settings) -> None:

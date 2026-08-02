@@ -1,4 +1,9 @@
-"""Tkinter GUI: manage quickphrases, categories, dark mode, on/off toggle."""
+"""Tkinter GUI: EMR-style card grid for managing quickphrases.
+
+Layout: top bar (pause / status / theme / add), search bar, category pill
+tabs (All / Favorites / each category), then a scrollable 3-column grid of
+phrase cards, each with trigger, category tag, preview, star, Edit, Delete.
+"""
 
 from __future__ import annotations
 
@@ -10,22 +15,34 @@ from .listener import ExpanderService
 from .store import DEFAULT_CATEGORY, PhraseStore
 
 PREFIX = ";"
-ALL = "All categories"
+ALL = "All"
+FAVORITES = "Favorites"
+COLUMNS = 3
 
 THEMES = {
     "light": {
-        "bg": "#f4f4f7", "panel": "#f4f4f7", "fg": "#1b1b22",
-        "muted": "#666677", "entry_bg": "#ffffff", "entry_fg": "#1b1b22",
-        "tree_bg": "#ffffff", "tree_fg": "#1b1b22", "tree_head": "#e6e6ec",
+        "bg": "#f4f4f7", "fg": "#1b1b22", "muted": "#666677",
+        "entry_bg": "#ffffff", "entry_fg": "#1b1b22",
+        "card_bg": "#ffffff", "card_border": "#dddde4",
+        "trigger": "#4f46e5", "tag_bg": "#e8e8f5", "tag_fg": "#4f46e5",
+        "pill_bg": "#e6e6ec", "pill_fg": "#1b1b22",
+        "pill_on_bg": "#6366f1", "pill_on_fg": "#ffffff",
+        "accent": "#188a4d", "accent_fg": "#ffffff",
+        "danger": "#b3261e", "star_on": "#e8a512", "star_off": "#a5a5b5",
         "select_bg": "#6366f1", "select_fg": "#ffffff",
-        "ok": "#0a7d33", "bad": "#b3261e",
+        "ok": "#0a7d33", "bad": "#b3261e", "btn_bg": "#e6e6ec",
     },
     "dark": {
-        "bg": "#1e1e2e", "panel": "#1e1e2e", "fg": "#e4e4ef",
-        "muted": "#9a9ab0", "entry_bg": "#2a2a3c", "entry_fg": "#e4e4ef",
-        "tree_bg": "#252536", "tree_fg": "#e4e4ef", "tree_head": "#33334a",
+        "bg": "#171722", "fg": "#e4e4ef", "muted": "#9a9ab0",
+        "entry_bg": "#232334", "entry_fg": "#e4e4ef",
+        "card_bg": "#1f1f30", "card_border": "#32324a",
+        "trigger": "#818cf8", "tag_bg": "#2c2c44", "tag_fg": "#93c5fd",
+        "pill_bg": "#2a2a3c", "pill_fg": "#e4e4ef",
+        "pill_on_bg": "#6366f1", "pill_on_fg": "#ffffff",
+        "accent": "#1f9d57", "accent_fg": "#ffffff",
+        "danger": "#f87171", "star_on": "#fbbf24", "star_off": "#55556d",
         "select_bg": "#6366f1", "select_fg": "#ffffff",
-        "ok": "#4ade80", "bad": "#f87171",
+        "ok": "#4ade80", "bad": "#f87171", "btn_bg": "#2a2a3c",
     },
 }
 
@@ -39,218 +56,356 @@ class QuickPhraseApp:
         self.service = ExpanderService(self.engine, on_expansion=self._on_expansion)
         self._expansion_count = 0
         self._filter = ALL
+        self._wrap = 260
 
         root.title("QuickPhrase")
-        root.geometry("720x540")
-        root.minsize(560, 420)
+        root.geometry("1000x680")
+        root.minsize(760, 480)
         self.style = ttk.Style(root)
         try:
             self.style.theme_use("clam")
         except tk.TclError:
             pass
-        self._build_ui()
-        self._apply_theme()
-        self._refresh_categories()
-        self._refresh_list()
+        self._build_static_ui()
+        self._render_all()
         self.service.start()
-        self._set_status_running(True)
         root.protocol("WM_DELETE_WINDOW", self._on_close)
 
-    # -- UI construction ----------------------------------------------------
+    # -- static skeleton ----------------------------------------------------
 
-    def _build_ui(self) -> None:
-        top = ttk.Frame(self.root, padding=(10, 8))
-        top.pack(fill="x")
-        self.toggle_btn = ttk.Button(top, text="Pause", command=self._toggle)
+    def _theme(self):
+        return THEMES["dark" if self.settings.get("dark") else "light"]
+
+    def _build_static_ui(self) -> None:
+        c = self._theme()
+        self.top = tk.Frame(self.root)
+        self.top.pack(fill="x", padx=14, pady=(12, 6))
+
+        self.toggle_btn = tk.Button(self.top, command=self._toggle, bd=0,
+                                    padx=14, pady=5, cursor="hand2")
         self.toggle_btn.pack(side="left")
-        self.status_lbl = ttk.Label(top, text="")
+        self.status_lbl = tk.Label(self.top)
         self.status_lbl.pack(side="left", padx=10)
-        self.dark_btn = ttk.Button(top, text="", width=12, command=self._toggle_dark)
-        self.dark_btn.pack(side="right")
-        self.hint_lbl = ttk.Label(top, text=f"Type  {PREFIX}trigger  anywhere to expand")
-        self.hint_lbl.pack(side="right", padx=10)
 
-        filter_row = ttk.Frame(self.root, padding=(10, 0, 10, 4))
-        filter_row.pack(fill="x")
-        ttk.Label(filter_row, text="Show:").pack(side="left")
-        self.filter_var = tk.StringVar(value=ALL)
-        self.filter_box = ttk.Combobox(filter_row, textvariable=self.filter_var,
-                                       state="readonly", width=24)
-        self.filter_box.pack(side="left", padx=6)
-        self.filter_box.bind("<<ComboboxSelected>>", lambda e: self._on_filter())
+        self.add_btn = tk.Button(self.top, text="+ Add Quick Phrase", bd=0,
+                                 padx=14, pady=5, cursor="hand2",
+                                 command=lambda: self._open_editor(None))
+        self.add_btn.pack(side="right")
+        self.dark_btn = tk.Button(self.top, bd=0, padx=12, pady=5,
+                                  cursor="hand2", command=self._toggle_dark)
+        self.dark_btn.pack(side="right", padx=8)
 
-        mid = ttk.Frame(self.root, padding=(10, 0))
-        mid.pack(fill="both", expand=True)
+        self.search_var = tk.StringVar()
+        self.search_var.trace_add("write", lambda *a: self._render_cards())
+        self.search = tk.Entry(self.root, textvariable=self.search_var,
+                               bd=0, font=("Segoe UI", 11), relief="flat")
+        self.search.pack(fill="x", padx=14, ipady=7)
 
-        columns = ("trigger", "category", "replacement")
-        self.tree = ttk.Treeview(mid, columns=columns, show="headings",
-                                 selectmode="browse")
-        self.tree.heading("trigger", text=f"Trigger ({PREFIX}…)")
-        self.tree.heading("category", text="Category")
-        self.tree.heading("replacement", text="Expands to")
-        self.tree.column("trigger", width=120, stretch=False)
-        self.tree.column("category", width=110, stretch=False)
-        self.tree.column("replacement", width=380)
-        scroll = ttk.Scrollbar(mid, orient="vertical", command=self.tree.yview)
-        self.tree.configure(yscrollcommand=scroll.set)
-        self.tree.pack(side="left", fill="both", expand=True)
-        scroll.pack(side="right", fill="y")
-        self.tree.bind("<Double-1>", lambda e: self._edit_selected())
+        self.pills_frame = tk.Frame(self.root)
+        self.pills_frame.pack(fill="x", padx=14, pady=(8, 2))
 
-        editor = ttk.LabelFrame(self.root, text="Add / edit phrase", padding=10)
-        editor.pack(fill="x", padx=10, pady=8)
-        self.editor_frame = editor
+        holder = tk.Frame(self.root)
+        holder.pack(fill="both", expand=True, padx=(14, 0), pady=(4, 10))
+        self.canvas = tk.Canvas(holder, highlightthickness=0, bd=0)
+        self.scroll = ttk.Scrollbar(holder, orient="vertical",
+                                    command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=self.scroll.set)
+        self.canvas.pack(side="left", fill="both", expand=True)
+        self.scroll.pack(side="right", fill="y")
+        self.grid_frame = tk.Frame(self.canvas)
+        self._canvas_win = self.canvas.create_window((0, 0), window=self.grid_frame,
+                                                     anchor="nw")
+        self.grid_frame.bind("<Configure>", lambda e: self.canvas.configure(
+            scrollregion=self.canvas.bbox("all")))
+        self.canvas.bind("<Configure>", self._on_canvas_resize)
+        self.root.bind_all("<MouseWheel>", self._on_wheel)
+        self.root.bind_all("<Button-4>", self._on_wheel)
+        self.root.bind_all("<Button-5>", self._on_wheel)
 
-        row1 = ttk.Frame(editor)
-        row1.pack(fill="x")
-        ttk.Label(row1, text=f"Trigger:  {PREFIX}").pack(side="left")
-        self.trigger_var = tk.StringVar()
-        ttk.Entry(row1, textvariable=self.trigger_var, width=16).pack(side="left")
-        ttk.Label(row1, text="   Category:").pack(side="left")
-        self.category_var = tk.StringVar(value=DEFAULT_CATEGORY)
-        self.category_box = ttk.Combobox(row1, textvariable=self.category_var, width=16)
-        self.category_box.pack(side="left")
-        self.ph_lbl = ttk.Label(
-            row1, text="{{date}} {{time}} {{cursor}} {{blank}}+Tab")
-        self.ph_lbl.pack(side="right")
+        self.hint = tk.Label(self.root, anchor="w",
+                             text=f"Type  {PREFIX}trigger  anywhere to expand — "
+                                  "Tab jumps between {{blank}} fill-ins")
+        self.hint.pack(fill="x", padx=14, pady=(0, 8))
 
-        ttk.Label(editor, text="Expands to:").pack(anchor="w", pady=(8, 2))
-        self.replacement_text = tk.Text(editor, height=4, wrap="word", undo=True,
-                                        relief="flat", borderwidth=6)
-        self.replacement_text.pack(fill="x")
+    # -- rendering ----------------------------------------------------------
 
-        row3 = ttk.Frame(editor)
-        row3.pack(fill="x", pady=(8, 0))
-        ttk.Button(row3, text="Save phrase", command=self._save_phrase).pack(side="left")
-        ttk.Button(row3, text="Delete", command=self._delete_selected).pack(side="left", padx=6)
-        ttk.Button(row3, text="Clear form", command=self._clear_form).pack(side="left")
-
-    # -- theming ------------------------------------------------------------
-
-    def _apply_theme(self) -> None:
-        dark = bool(self.settings.get("dark"))
-        c = THEMES["dark" if dark else "light"]
+    def _render_all(self) -> None:
+        c = self._theme()
         self.root.configure(bg=c["bg"])
-        s = self.style
-        s.configure(".", background=c["bg"], foreground=c["fg"],
-                    fieldbackground=c["entry_bg"])
-        s.configure("TFrame", background=c["bg"])
-        s.configure("TLabel", background=c["bg"], foreground=c["fg"])
-        s.configure("Muted.TLabel", background=c["bg"], foreground=c["muted"])
-        s.configure("TLabelframe", background=c["bg"], foreground=c["fg"])
-        s.configure("TLabelframe.Label", background=c["bg"], foreground=c["muted"])
-        s.configure("TButton", background=c["tree_head"], foreground=c["fg"],
-                    borderwidth=0, focusthickness=0, padding=(10, 4))
-        s.map("TButton", background=[("active", c["select_bg"])],
-              foreground=[("active", c["select_fg"])])
-        s.configure("Treeview", background=c["tree_bg"], foreground=c["tree_fg"],
-                    fieldbackground=c["tree_bg"], borderwidth=0, rowheight=24)
-        s.configure("Treeview.Heading", background=c["tree_head"],
-                    foreground=c["fg"], borderwidth=0)
-        s.map("Treeview", background=[("selected", c["select_bg"])],
-              foreground=[("selected", c["select_fg"])])
-        s.configure("TCombobox", fieldbackground=c["entry_bg"],
-                    background=c["tree_head"], foreground=c["entry_fg"],
-                    arrowcolor=c["fg"])
-        s.map("TCombobox", fieldbackground=[("readonly", c["entry_bg"])],
-              foreground=[("readonly", c["entry_fg"])])
-        s.configure("TEntry", fieldbackground=c["entry_bg"],
-                    foreground=c["entry_fg"], insertcolor=c["entry_fg"])
-        s.configure("Vertical.TScrollbar", background=c["tree_head"],
-                    troughcolor=c["bg"], borderwidth=0, arrowcolor=c["fg"])
-        self.replacement_text.configure(
-            bg=c["entry_bg"], fg=c["entry_fg"], insertbackground=c["entry_fg"],
-            selectbackground=c["select_bg"], selectforeground=c["select_fg"])
-        self.hint_lbl.configure(style="Muted.TLabel")
-        self.ph_lbl.configure(style="Muted.TLabel")
-        self.dark_btn.configure(text="☀ Light mode" if dark else "🌙 Dark mode")
-        self._set_status_running(self.service.running if hasattr(self, "service") else True)
+        for w in (self.top, self.pills_frame, self.grid_frame):
+            w.configure(bg=c["bg"])
+        self.canvas.configure(bg=c["bg"])
+        self.search.configure(bg=c["entry_bg"], fg=c["entry_fg"],
+                              insertbackground=c["entry_fg"])
+        self.hint.configure(bg=c["bg"], fg=c["muted"])
+        self.status_lbl.configure(bg=c["bg"])
+        self.toggle_btn.configure(bg=c["btn_bg"], fg=c["fg"],
+                                  activebackground=c["select_bg"],
+                                  activeforeground=c["select_fg"])
+        self.add_btn.configure(bg=c["accent"], fg=c["accent_fg"],
+                               activebackground=c["accent"],
+                               activeforeground=c["accent_fg"])
+        self.dark_btn.configure(bg=c["btn_bg"], fg=c["fg"],
+                                activebackground=c["select_bg"],
+                                activeforeground=c["select_fg"],
+                                text="☀ Light" if self.settings.get("dark") else "🌙 Dark")
+        self.style.configure("Vertical.TScrollbar", background=c["btn_bg"],
+                             troughcolor=c["bg"], borderwidth=0,
+                             arrowcolor=c["fg"])
+        self._set_status()
+        self._render_pills()
+        self._render_cards()
+
+    def _render_pills(self) -> None:
+        c = self._theme()
+        for w in self.pills_frame.winfo_children():
+            w.destroy()
+        pills = [ALL, f"★ {FAVORITES}"] + self._categories()
+        row = None
+        used = 0
+        for name in pills:
+            width = len(name) + 4
+            if row is None or used + width > 120:
+                row = tk.Frame(self.pills_frame, bg=c["bg"])
+                row.pack(fill="x", pady=1)
+                used = 0
+            used += width
+            active = (name == self._filter)
+            btn = tk.Button(
+                row, text=name, bd=0, padx=10, pady=3, cursor="hand2",
+                font=("Segoe UI", 9, "bold" if active else "normal"),
+                bg=c["pill_on_bg"] if active else c["pill_bg"],
+                fg=c["pill_on_fg"] if active else c["pill_fg"],
+                activebackground=c["pill_on_bg"], activeforeground=c["pill_on_fg"],
+                command=lambda n=name: self._set_filter(n))
+            btn.pack(side="left", padx=2)
+
+    def _visible_phrases(self):
+        query = self.search_var.get().strip().lower()
+        items = []
+        for trigger in sorted(self.phrases):
+            e = self.phrases[trigger]
+            if self._filter == f"★ {FAVORITES}" and not e.get("favorite"):
+                continue
+            if self._filter not in (ALL, f"★ {FAVORITES}") and \
+                    e.get("category", DEFAULT_CATEGORY) != self._filter:
+                continue
+            if query and query not in trigger.lower() and \
+                    query not in e["text"].lower():
+                continue
+            items.append(trigger)
+        return items
+
+    def _render_cards(self) -> None:
+        c = self._theme()
+        for w in self.grid_frame.winfo_children():
+            w.destroy()
+        for col in range(COLUMNS):
+            self.grid_frame.columnconfigure(col, weight=1, uniform="cards")
+
+        visible = self._visible_phrases()
+        if not visible:
+            tk.Label(self.grid_frame, text="No phrases match.",
+                     bg=c["bg"], fg=c["muted"], font=("Segoe UI", 11)
+                     ).grid(row=0, column=0, columnspan=COLUMNS, pady=30)
+            return
+
+        for i, trigger in enumerate(visible):
+            entry = self.phrases[trigger]
+            card = tk.Frame(self.grid_frame, bg=c["card_bg"],
+                            highlightbackground=c["card_border"],
+                            highlightthickness=1)
+            card.grid(row=i // COLUMNS, column=i % COLUMNS,
+                      sticky="nsew", padx=6, pady=6)
+
+            head = tk.Frame(card, bg=c["card_bg"])
+            head.pack(fill="x", padx=10, pady=(8, 2))
+            tk.Label(head, text=PREFIX + trigger, bg=c["card_bg"],
+                     fg=c["trigger"], font=("Consolas", 12, "bold")
+                     ).pack(side="left")
+            tk.Label(head, text=entry.get("category", DEFAULT_CATEGORY),
+                     bg=c["tag_bg"], fg=c["tag_fg"], padx=7, pady=1,
+                     font=("Segoe UI", 8)).pack(side="right")
+
+            preview = entry["text"].replace("\n", " ").strip()
+            if len(preview) > 220:
+                preview = preview[:220] + "…"
+            tk.Label(card, text=preview, bg=c["card_bg"], fg=c["muted"],
+                     justify="left", anchor="nw", wraplength=self._wrap,
+                     font=("Segoe UI", 9)).pack(fill="both", expand=True,
+                                                padx=10, pady=(0, 4))
+
+            foot = tk.Frame(card, bg=c["card_bg"])
+            foot.pack(fill="x", padx=8, pady=(0, 8))
+            fav = entry.get("favorite", False)
+            tk.Button(foot, text="★" if fav else "☆", bd=0, cursor="hand2",
+                      bg=c["card_bg"], fg=c["star_on"] if fav else c["star_off"],
+                      activebackground=c["card_bg"], font=("Segoe UI", 12),
+                      command=lambda t=trigger: self._toggle_favorite(t)
+                      ).pack(side="left")
+            tk.Button(foot, text="Delete", bd=0, padx=10, pady=2,
+                      cursor="hand2", bg=c["card_bg"], fg=c["danger"],
+                      activebackground=c["danger"], activeforeground="#ffffff",
+                      command=lambda t=trigger: self._delete(t)
+                      ).pack(side="right")
+            tk.Button(foot, text="Edit", bd=0, padx=10, pady=2,
+                      cursor="hand2", bg=c["btn_bg"], fg=c["fg"],
+                      activebackground=c["select_bg"], activeforeground="#ffffff",
+                      command=lambda t=trigger: self._open_editor(t)
+                      ).pack(side="right", padx=6)
+
+    # -- events -------------------------------------------------------------
+
+    def _on_canvas_resize(self, event) -> None:
+        self.canvas.itemconfigure(self._canvas_win, width=event.width)
+        wrap = max(170, event.width // COLUMNS - 60)
+        if abs(wrap - self._wrap) > 24:
+            self._wrap = wrap
+            self._render_cards()
+
+    def _on_wheel(self, event) -> None:
+        if getattr(event, "num", None) == 4:
+            self.canvas.yview_scroll(-3, "units")
+        elif getattr(event, "num", None) == 5:
+            self.canvas.yview_scroll(3, "units")
+        else:
+            self.canvas.yview_scroll(-3 if event.delta > 0 else 3, "units")
+
+    def _set_filter(self, name: str) -> None:
+        self._filter = name
+        self._render_pills()
+        self._render_cards()
 
     def _toggle_dark(self) -> None:
         self.settings["dark"] = not bool(self.settings.get("dark"))
         self.store.save(self.phrases, self.settings)
-        self._apply_theme()
-
-    # -- actions ------------------------------------------------------------
+        self._render_all()
 
     def _toggle(self) -> None:
         if self.service.running:
             self.service.stop()
-            self._set_status_running(False)
         else:
             self.service.start()
-            self._set_status_running(True)
+        self._set_status()
 
-    def _set_status_running(self, running: bool) -> None:
-        c = THEMES["dark" if self.settings.get("dark") else "light"]
-        if running:
+    def _set_status(self) -> None:
+        c = self._theme()
+        if self.service.running if hasattr(self, "service") else True:
             self.toggle_btn.configure(text="Pause")
             suffix = (f" — {self._expansion_count} expansions"
                       if self._expansion_count else "")
-            self.status_lbl.configure(text="● Expanding" + suffix, foreground=c["ok"])
+            self.status_lbl.configure(text="● Expanding" + suffix, fg=c["ok"])
         else:
             self.toggle_btn.configure(text="Resume")
-            self.status_lbl.configure(text="● Paused", foreground=c["bad"])
+            self.status_lbl.configure(text="● Paused", fg=c["bad"])
 
-    def _save_phrase(self) -> None:
-        trigger = self.trigger_var.get().strip().lstrip(PREFIX)
-        replacement = self.replacement_text.get("1.0", "end-1c")
-        category = self.category_var.get().strip() or DEFAULT_CATEGORY
-        if not trigger:
-            messagebox.showwarning("QuickPhrase", "Trigger can't be empty.")
-            return
-        if any(ch.isspace() for ch in trigger):
-            messagebox.showwarning("QuickPhrase", "Triggers can't contain spaces.")
-            return
-        if not replacement:
-            messagebox.showwarning("QuickPhrase", "The expansion text is empty.")
-            return
-        conflict = next(
-            (t for t in self.phrases
-             if t != trigger and (t.startswith(trigger) or trigger.startswith(t))),
-            None,
-        )
-        if conflict and not messagebox.askyesno(
-            "QuickPhrase",
-            f"'{PREFIX}{trigger}' overlaps with existing '{PREFIX}{conflict}'.\n"
-            "The shorter one will wait briefly for the longer one while typing.\n\n"
-            "Save anyway?",
-        ):
-            return
-        self.phrases[trigger] = {"text": replacement, "category": category}
+    def _toggle_favorite(self, trigger: str) -> None:
+        self.phrases[trigger]["favorite"] = not self.phrases[trigger].get("favorite")
         self._persist()
-        self._refresh_categories()
-        self._refresh_list(select=trigger)
+        self._render_cards()
 
-    def _delete_selected(self) -> None:
-        trigger = self._selected_trigger() or self.trigger_var.get().strip().lstrip(PREFIX)
-        if not trigger or trigger not in self.phrases:
-            return
+    def _delete(self, trigger: str) -> None:
         if messagebox.askyesno("QuickPhrase", f"Delete '{PREFIX}{trigger}'?"):
             del self.phrases[trigger]
             self._persist()
-            self._refresh_categories()
-            self._refresh_list()
-            self._clear_form()
+            self._render_cards()
 
-    def _edit_selected(self) -> None:
-        trigger = self._selected_trigger()
-        if trigger is None:
-            return
-        entry = self.phrases[trigger]
-        self.trigger_var.set(trigger)
-        self.category_var.set(entry.get("category", DEFAULT_CATEGORY))
-        self.replacement_text.delete("1.0", "end")
-        self.replacement_text.insert("1.0", entry["text"])
+    def _on_expansion(self, expansion) -> None:
+        self._expansion_count += 1
+        self.root.after(0, self._set_status)
 
-    def _clear_form(self) -> None:
-        self.trigger_var.set("")
-        self.category_var.set(DEFAULT_CATEGORY)
-        self.replacement_text.delete("1.0", "end")
+    def _on_close(self) -> None:
+        self.service.stop()
+        self.root.destroy()
 
-    def _on_filter(self) -> None:
-        self._filter = self.filter_var.get()
-        self._refresh_list()
+    # -- add / edit dialog --------------------------------------------------
+
+    def _open_editor(self, trigger: str | None) -> None:
+        c = self._theme()
+        win = tk.Toplevel(self.root)
+        win.title("Edit phrase" if trigger else "Add Quick Phrase")
+        win.geometry("560x420")
+        win.configure(bg=c["bg"])
+        win.transient(self.root)
+        win.grab_set()
+
+        entry = self.phrases.get(trigger, {}) if trigger else {}
+
+        def label(text, pady=(10, 2)):
+            tk.Label(win, text=text, bg=c["bg"], fg=c["fg"],
+                     font=("Segoe UI", 10)).pack(anchor="w", padx=14, pady=pady)
+
+        label("Trigger (typed after  %s ):" % PREFIX)
+        trig_var = tk.StringVar(value=trigger or "")
+        tk.Entry(win, textvariable=trig_var, bd=0, font=("Consolas", 12),
+                 bg=c["entry_bg"], fg=c["entry_fg"],
+                 insertbackground=c["entry_fg"]).pack(fill="x", padx=14, ipady=5)
+
+        label("Category:")
+        cat_var = tk.StringVar(value=entry.get("category", DEFAULT_CATEGORY))
+        cat_box = ttk.Combobox(win, textvariable=cat_var,
+                               values=self._categories())
+        cat_box.pack(fill="x", padx=14)
+
+        label("Expands to   ({{date}} {{time}} {{cursor}} {{blank}}+Tab):")
+        text = tk.Text(win, height=8, wrap="word", undo=True, bd=0,
+                       bg=c["entry_bg"], fg=c["entry_fg"],
+                       insertbackground=c["entry_fg"], font=("Segoe UI", 10))
+        text.pack(fill="both", expand=True, padx=14)
+        if entry:
+            text.insert("1.0", entry["text"])
+
+        btns = tk.Frame(win, bg=c["bg"])
+        btns.pack(fill="x", padx=14, pady=10)
+
+        def save():
+            new_trigger = trig_var.get().strip().lstrip(PREFIX)
+            replacement = text.get("1.0", "end-1c")
+            category = cat_var.get().strip() or DEFAULT_CATEGORY
+            if not new_trigger:
+                messagebox.showwarning("QuickPhrase", "Trigger can't be empty.",
+                                       parent=win)
+                return
+            if any(ch.isspace() for ch in new_trigger):
+                messagebox.showwarning("QuickPhrase",
+                                       "Triggers can't contain spaces.", parent=win)
+                return
+            if not replacement:
+                messagebox.showwarning("QuickPhrase",
+                                       "The expansion text is empty.", parent=win)
+                return
+            conflict = next(
+                (t for t in self.phrases
+                 if t != new_trigger and t != trigger and
+                 (t.startswith(new_trigger) or new_trigger.startswith(t))), None)
+            if conflict and not messagebox.askyesno(
+                "QuickPhrase",
+                f"'{PREFIX}{new_trigger}' overlaps with '{PREFIX}{conflict}'.\n"
+                "The shorter one waits briefly for the longer while typing.\n\n"
+                "Save anyway?", parent=win):
+                return
+            if trigger and trigger != new_trigger:
+                self.phrases.pop(trigger, None)
+            favorite = entry.get("favorite", False)
+            self.phrases[new_trigger] = {"text": replacement,
+                                         "category": category,
+                                         "favorite": favorite}
+            cats = self.settings.setdefault("categories", [])
+            if category not in cats:
+                cats.append(category)
+            self._persist()
+            self._render_pills()
+            self._render_cards()
+            win.destroy()
+
+        tk.Button(btns, text="Save phrase", bd=0, padx=16, pady=6,
+                  cursor="hand2", bg=c["accent"], fg=c["accent_fg"],
+                  activebackground=c["accent"], activeforeground=c["accent_fg"],
+                  command=save).pack(side="right")
+        tk.Button(btns, text="Cancel", bd=0, padx=16, pady=6, cursor="hand2",
+                  bg=c["btn_bg"], fg=c["fg"], activebackground=c["select_bg"],
+                  activeforeground=c["select_fg"],
+                  command=win.destroy).pack(side="right", padx=8)
 
     # -- helpers ------------------------------------------------------------
 
@@ -258,45 +413,13 @@ class QuickPhraseApp:
         return {t: e["text"] for t, e in self.phrases.items()}
 
     def _categories(self):
-        return sorted({e.get("category", DEFAULT_CATEGORY)
-                       for e in self.phrases.values()})
-
-    def _selected_trigger(self) -> str | None:
-        selection = self.tree.selection()
-        return selection[0] if selection else None
+        seeded = set(self.settings.get("categories", []))
+        used = {e.get("category", DEFAULT_CATEGORY) for e in self.phrases.values()}
+        return sorted(seeded | used)
 
     def _persist(self) -> None:
         self.store.save(self.phrases, self.settings)
         self.engine.set_phrases(self._trigger_map())
-
-    def _refresh_categories(self) -> None:
-        cats = self._categories()
-        self.filter_box["values"] = [ALL] + cats
-        if self._filter not in ([ALL] + cats):
-            self._filter = ALL
-            self.filter_var.set(ALL)
-        self.category_box["values"] = cats
-
-    def _refresh_list(self, select: str | None = None) -> None:
-        self.tree.delete(*self.tree.get_children())
-        for trigger in sorted(self.phrases):
-            entry = self.phrases[trigger]
-            category = entry.get("category", DEFAULT_CATEGORY)
-            if self._filter != ALL and category != self._filter:
-                continue
-            preview = entry["text"].replace("\n", " ⏎ ")
-            self.tree.insert("", "end", iid=trigger,
-                             values=(PREFIX + trigger, category, preview))
-        if select and self.tree.exists(select):
-            self.tree.selection_set(select)
-
-    def _on_expansion(self, expansion) -> None:
-        self._expansion_count += 1
-        self.root.after(0, lambda: self._set_status_running(self.service.running))
-
-    def _on_close(self) -> None:
-        self.service.stop()
-        self.root.destroy()
 
 
 def main() -> None:
