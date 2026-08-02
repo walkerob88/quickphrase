@@ -2,8 +2,8 @@ name: Build releases
 
 on:
   push:
-    tags: ["v*"]          # e.g. tag v0.2.0 triggers a release build
-  workflow_dispatch: {}    # or run manually from the Actions tab
+    tags: ["v*"]
+  workflow_dispatch: {}
 
 jobs:
   build:
@@ -15,8 +15,13 @@ jobs:
             artifact: QuickPhrase-windows
             path: dist/QuickPhrase.exe
           - os: macos-latest
-            artifact: QuickPhrase-macos
-            path: dist/QuickPhrase-macos.zip
+            artifact: QuickPhrase-macos-applesilicon
+            path: dist/QuickPhrase-macos-applesilicon.zip
+            maczip: QuickPhrase-macos-applesilicon.zip
+          - os: macos-15-intel
+            artifact: QuickPhrase-macos-intel
+            path: dist/QuickPhrase-macos-intel.zip
+            maczip: QuickPhrase-macos-intel.zip
           - os: ubuntu-latest
             artifact: QuickPhrase-linux
             path: dist/QuickPhrase
@@ -50,7 +55,7 @@ jobs:
 
       - name: Zip macOS app bundle
         if: runner.os == 'macOS'
-        run: cd dist && zip -r QuickPhrase-macos.zip QuickPhrase.app
+        run: cd dist && zip -r ${{ matrix.maczip }} QuickPhrase.app
 
       - uses: actions/upload-artifact@v4
         with:
@@ -71,9 +76,10 @@ jobs:
       - name: Rename for release
         run: |
           mkdir out
-          cp artifacts/QuickPhrase-windows/QuickPhrase.exe   out/QuickPhrase-windows.exe
-          cp artifacts/QuickPhrase-macos/QuickPhrase-macos.zip out/QuickPhrase-macos.zip
-          cp artifacts/QuickPhrase-linux/QuickPhrase          out/QuickPhrase-linux
+          cp artifacts/QuickPhrase-windows/QuickPhrase.exe out/QuickPhrase-windows.exe
+          cp artifacts/QuickPhrase-macos-applesilicon/QuickPhrase-macos-applesilicon.zip out/
+          cp artifacts/QuickPhrase-macos-intel/QuickPhrase-macos-intel.zip out/
+          cp artifacts/QuickPhrase-linux/QuickPhrase out/QuickPhrase-linux
 
       - uses: softprops/action-gh-release@v2
         with:
