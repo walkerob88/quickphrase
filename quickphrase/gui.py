@@ -7,9 +7,11 @@ phrase cards, each with trigger, category tag, preview, star, Edit, Delete.
 
 from __future__ import annotations
 
+import os
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import filedialog, messagebox, ttk
 
+from . import packs
 from .engine import ExpansionEngine
 from .listener import ExpanderService
 from .store import DEFAULT_CATEGORY, PhraseStore
@@ -94,6 +96,10 @@ class QuickPhraseApp:
         self.dark_btn = tk.Button(self.top, bd=0, padx=12, pady=5,
                                   cursor="hand2", command=self._toggle_dark)
         self.dark_btn.pack(side="right", padx=8)
+        self.packs_btn = tk.Button(self.top, text="⇅ Packs", bd=0, padx=12,
+                                   pady=5, cursor="hand2",
+                                   command=self._show_packs_menu)
+        self.packs_btn.pack(side="right")
 
         self.search_var = tk.StringVar()
         self.search_var.trace_add("write", lambda *a: self._render_cards())
@@ -149,6 +155,9 @@ class QuickPhraseApp:
                                 activebackground=c["select_bg"],
                                 activeforeground=c["select_fg"],
                                 text="☀ Light" if self.settings.get("dark") else "🌙 Dark")
+        self.packs_btn.configure(bg=c["btn_bg"], fg=c["fg"],
+                                 activebackground=c["select_bg"],
+                                 activeforeground=c["select_fg"])
         self.style.configure("Vertical.TScrollbar", background=c["btn_bg"],
                              troughcolor=c["bg"], borderwidth=0,
                              arrowcolor=c["fg"])
@@ -317,6 +326,112 @@ class QuickPhraseApp:
     def _on_close(self) -> None:
         self.service.stop()
         self.root.destroy()
+
+    # -- phrase packs -------------------------------------------------------
+
+    def _show_packs_menu(self) -> None:
+        c = self._theme()
+        menu = tk.Menu(self.root, tearoff=0, bg=c["card_bg"], fg=c["fg"],
+                       activebackground=c["select_bg"],
+                       activeforeground=c["select_fg"], bd=0)
+        if os.path.exists(packs.builtin_pack_path("orthopedics")):
+            menu.add_command(label="Load built-in: Orthopedics Starter (130 phrases)",
+                             command=self._load_builtin_ortho)
+            menu.add_separator()
+        menu.add_command(label="Import pack from file…", command=self._import_pack)
+        menu.add_command(label="Export pack to file…", command=self._export_pack)
+        menu.tk_popup(self.packs_btn.winfo_rootx(),
+                      self.packs_btn.winfo_rooty() + self.packs_btn.winfo_height())
+
+    def _load_builtin_ortho(self) -> None:
+        self._apply_pack_file(packs.builtin_pack_path("orthopedics"))
+
+    def _import_pack(self) -> None:
+        path = filedialog.askopenfilename(
+            title="Import QuickPhrase pack",
+            filetypes=[("QuickPhrase pack", "*.json"), ("All files", "*.*")])
+        if path:
+            self._apply_pack_file(path)
+
+    def _apply_pack_file(self, path: str) -> None:
+        try:
+            name, incoming = packs.load_pack(path)
+        except packs.PackError as exc:
+            messagebox.showerror("QuickPhrase", str(exc))
+            return
+        _, _, conflicts = packs.merge(self.phrases, incoming, overwrite=False)
+        overwrite = False
+        if conflicts:
+            answer = messagebox.askyesnocancel(
+                "QuickPhrase",
+                f"'{name}' contains {conflicts} trigger(s) that differ from "
+                "yours.\n\nYes = replace yours with the pack's version\n"
+                "No = keep yours and import only new phrases\nCancel = abort")
+            if answer is None:
+                return
+            overwrite = bool(answer)
+        merged, applied, _ = packs.merge(self.phrases, incoming, overwrite)
+        self.phrases = merged
+        cats = self.settings.setdefault("categories", [])
+        for entry in incoming.values():
+            if entry["category"] not in cats:
+                cats.append(entry["category"])
+        self._persist()
+        self._render_pills()
+        self._render_cards()
+        messagebox.showinfo("QuickPhrase",
+                            f"Imported '{name}': {applied} phrase(s) added or "
+                            "updated.")
+
+    def _export_pack(self) -> None:
+        c = self._theme()
+        win = tk.Toplevel(self.root)
+        win.title("Export pack")
+        win.geometry("360x420")
+        win.configure(bg=c["bg"])
+        win.transient(self.root)
+        win.grab_set()
+        tk.Label(win, text="Choose categories to export:", bg=c["bg"],
+                 fg=c["fg"], font=("Segoe UI", 10)).pack(anchor="w",
+                                                         padx=14, pady=(12, 4))
+        box = tk.Listbox(win, selectmode="multiple", bd=0,
+                         bg=c["entry_bg"], fg=c["entry_fg"],
+                         selectbackground=c["select_bg"],
+                         selectforeground=c["select_fg"],
+                         font=("Segoe UI", 10), activestyle="none")
+        cats = self._categories()
+        for cat in cats:
+            box.insert("end", cat)
+        box.select_set(0, "end")
+        box.pack(fill="both", expand=True, padx=14)
+
+        def do_export():
+            chosen = {cats[i] for i in box.curselection()}
+            subset = {t: e for t, e in self.phrases.items()
+                      if e.get("category", DEFAULT_CATEGORY) in chosen}
+            if not subset:
+                messagebox.showwarning("QuickPhrase",
+                                       "No phrases in the selected categories.",
+                                       parent=win)
+                return
+            path = filedialog.asksaveasfilename(
+                parent=win, title="Save pack as", defaultextension=".json",
+                initialfile="my-quickphrase-pack.json",
+                filetypes=[("QuickPhrase pack", "*.json")])
+            if not path:
+                return
+            packs.save_pack(path, os.path.splitext(os.path.basename(path))[0],
+                            subset)
+            win.destroy()
+            messagebox.showinfo("QuickPhrase",
+                                f"Exported {len(subset)} phrase(s) to\n{path}\n\n"
+                                "Share the file — friends import it via "
+                                "Packs → Import.")
+
+        tk.Button(win, text="Export…", bd=0, padx=16, pady=6, cursor="hand2",
+                  bg=c["accent"], fg=c["accent_fg"],
+                  activebackground=c["accent"], activeforeground=c["accent_fg"],
+                  command=do_export).pack(pady=12)
 
     # -- add / edit dialog --------------------------------------------------
 

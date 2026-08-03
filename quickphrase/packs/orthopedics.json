@@ -1,0 +1,528 @@
+{
+  "format": "quickphrase-pack",
+  "version": 1,
+  "name": "Orthopedics Starter Pack",
+  "description": "130 original orthopedic documentation templates (10 per subspecialty category) with {{blank}} Tab-stop fill-ins. Generic scaffolds modeled on standard orthopedic practice patterns — review and adapt before clinical use.",
+  "phrases": {
+    "cts": {
+      "text": "The patient presents for evaluation of {{blank}} carpal tunnel syndrome. Symptoms include numbness and tingling in the thumb, index, and long fingers of {{blank}} duration, worse at night and with sustained grip. Tinel and Phalen testing: {{blank}}. Plan: {{blank}}.",
+      "category": "Hand & Wrist"
+    },
+    "cmc": {
+      "text": "The patient presents with {{blank}} thumb CMC arthritis. Pain is localized to the base of the thumb and aggravated by pinching, gripping, and opening jars. Grind test: {{blank}}. Radiographs demonstrate {{blank}}. Plan: {{blank}}.",
+      "category": "Hand & Wrist"
+    },
+    "trigger": {
+      "text": "The patient presents with triggering of the {{blank}} finger of {{blank}} duration. They report catching and locking, worse in the morning, with a tender nodule over the A1 pulley. Plan: {{blank}}.",
+      "category": "Hand & Wrist"
+    },
+    "dequervain": {
+      "text": "The patient presents with {{blank}} radial-sided wrist pain consistent with de Quervain tenosynovitis. Pain is aggravated by thumb motion and lifting. Finkelstein test is {{blank}}. Plan: {{blank}}.",
+      "category": "Hand & Wrist"
+    },
+    "ganglion": {
+      "text": "The patient presents with a {{blank}} wrist mass consistent with a ganglion cyst, present for {{blank}}. The mass transilluminates and is {{blank}} tender. Plan: observation vs aspiration vs excision discussed; patient elects {{blank}}.",
+      "category": "Hand & Wrist"
+    },
+    "drfx": {
+      "text": "The patient presents following {{blank}} injury on {{blank}} with a {{blank}} distal radius fracture. Neurovascular exam is {{blank}}. Radiographs demonstrate {{blank}}. Plan: {{blank}}.",
+      "category": "Hand & Wrist"
+    },
+    "scaphoid": {
+      "text": "The patient presents after a fall onto an outstretched hand with {{blank}} anatomic snuffbox tenderness. Radiographs: {{blank}}. Given the risk of occult scaphoid fracture and avascular necrosis, plan: {{blank}}.",
+      "category": "Hand & Wrist"
+    },
+    "mallet": {
+      "text": "The patient presents with a {{blank}} mallet finger injury of the {{blank}} finger sustained on {{blank}}. There is an extensor lag at the DIP joint of {{blank}} degrees. Radiographs: {{blank}}. Plan: extension splinting full-time for {{blank}} weeks.",
+      "category": "Hand & Wrist"
+    },
+    "dupuytren": {
+      "text": "The patient presents with {{blank}} Dupuytren contracture involving the {{blank}} ray(s). MCP contracture measures {{blank}} degrees; PIP contracture {{blank}} degrees. Tabletop test: {{blank}}. Plan: {{blank}}.",
+      "category": "Hand & Wrist"
+    },
+    "tfcc": {
+      "text": "The patient presents with {{blank}} ulnar-sided wrist pain consistent with TFCC pathology, aggravated by forearm rotation and ulnar deviation. Fovea sign: {{blank}}. Imaging: {{blank}}. Plan: {{blank}}.",
+      "category": "Hand & Wrist"
+    },
+    "tennis": {
+      "text": "The patient presents with {{blank}} lateral elbow pain consistent with lateral epicondylitis of {{blank}} duration. Pain is aggravated by wrist extension and gripping. Tenderness is localized just distal to the lateral epicondyle. Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "golfers": {
+      "text": "The patient presents with {{blank}} medial elbow pain consistent with medial epicondylitis of {{blank}} duration, aggravated by wrist flexion and pronation. Ulnar nerve symptoms: {{blank}}. Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "cubital": {
+      "text": "The patient presents with {{blank}} medial elbow pain and ulnar nerve symptoms consistent with cubital tunnel syndrome, including numbness and tingling of the ring and small fingers. Tinel at the cubital tunnel: {{blank}}. Intrinsic strength: {{blank}}. Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "olecbursitis": {
+      "text": "The patient presents with {{blank}} olecranon bursitis of {{blank}} duration. The bursa is {{blank}} with {{blank}} signs of infection (erythema, warmth, fever). Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "radhead": {
+      "text": "The patient presents following {{blank}} with a {{blank}} radial head fracture. Elbow range of motion: {{blank}}. Mechanical block: {{blank}}. Radiographs demonstrate {{blank}} (Mason type {{blank}}). Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "distbiceps": {
+      "text": "The patient presents following a sudden eccentric load to the flexed elbow with concern for {{blank}} distal biceps rupture. Hook test: {{blank}}. Weakness in supination: {{blank}}. Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "elbowoa": {
+      "text": "The patient presents with {{blank}} elbow arthritis. Symptoms include pain at terminal extension and flexion with {{blank}} mechanical symptoms. Arc of motion measures {{blank}}. Radiographs demonstrate {{blank}}. Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "elbowstiff": {
+      "text": "The patient presents with {{blank}} elbow stiffness following {{blank}}. Current arc of motion is {{blank}} to {{blank}} degrees. A functional arc of 30-130 degrees was discussed. Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "elbowocd": {
+      "text": "The patient is a {{blank}}-year-old presenting with {{blank}} elbow pain consistent with osteochondritis dissecans of the capitellum. Sports participation: {{blank}}. Imaging demonstrates {{blank}}. Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "elbowfx": {
+      "text": "The patient presents following {{blank}} on {{blank}} with a {{blank}} elbow fracture involving the {{blank}}. Neurovascular exam: {{blank}}. Radiographs demonstrate {{blank}}. Plan: {{blank}}.",
+      "category": "Elbow"
+    },
+    "rc": {
+      "text": "The patient presents with {{blank}} shoulder pain and weakness consistent with rotator cuff pathology. Symptoms have been present for {{blank}} and are worse with overhead activity and at night. Strength testing: {{blank}}. Imaging: {{blank}}. Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "impinge": {
+      "text": "The patient presents with {{blank}} shoulder pain consistent with subacromial impingement of {{blank}} duration. Pain is provoked with overhead activity. Neer and Hawkins signs: {{blank}}. Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "frozen": {
+      "text": "The patient presents with {{blank}} shoulder pain and progressive stiffness consistent with adhesive capsulitis. Both active and passive motion are restricted: forward elevation {{blank}}, external rotation {{blank}}. Risk factors: {{blank}}. Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "gleno": {
+      "text": "The patient presents with {{blank}} glenohumeral arthritis. Pain has been present for {{blank}} with progressive loss of motion. Radiographs demonstrate {{blank}}. Prior treatment: {{blank}}. Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "slap": {
+      "text": "The patient presents with {{blank}} shoulder pain consistent with superior labral pathology. Symptoms include deep pain with overhead and cross-body activity. O'Brien test: {{blank}}. MRI: {{blank}}. Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "acj": {
+      "text": "The patient presents with {{blank}} pain localized to the acromioclavicular joint following {{blank}}. Cross-body adduction reproduces symptoms. Radiographs demonstrate {{blank}} (Rockwood type {{blank}} if traumatic). Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "instability": {
+      "text": "The patient presents with {{blank}} shoulder instability. First dislocation occurred {{blank}}; number of recurrences: {{blank}}. Apprehension and relocation testing: {{blank}}. Imaging: {{blank}}. Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "phfx": {
+      "text": "The patient presents following {{blank}} on {{blank}} with a {{blank}} proximal humerus fracture. Neurovascular exam including axillary nerve: {{blank}}. Radiographs demonstrate {{blank}}. Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "calcific": {
+      "text": "The patient presents with acute {{blank}} shoulder pain consistent with calcific tendinitis. Radiographs demonstrate calcification within the {{blank}} tendon measuring {{blank}}. Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "bicep": {
+      "text": "The patient presents with {{blank}} anterior shoulder pain consistent with biceps tendinopathy. Tenderness localizes to the bicipital groove; Speed test: {{blank}}. Plan: {{blank}}.",
+      "category": "Shoulder"
+    },
+    "acl": {
+      "text": "The patient presents following a {{blank}} injury on {{blank}} with concern for ACL rupture. They report a pop, immediate swelling, and instability. Lachman: {{blank}}. Pivot shift: {{blank}}. MRI: {{blank}}. Plan: {{blank}}.",
+      "category": "Knee"
+    },
+    "mcl": {
+      "text": "The patient presents following a valgus load to the {{blank}} knee on {{blank}}. Tenderness localizes to the {{blank}} MCL. Valgus stress testing at 0 and 30 degrees: {{blank}} (grade {{blank}}). Plan: {{blank}}.",
+      "category": "Knee"
+    },
+    "meniscus": {
+      "text": "The patient presents with {{blank}} knee pain consistent with meniscal pathology, including {{blank}} joint line tenderness and mechanical symptoms of {{blank}}. McMurray: {{blank}}. Imaging: {{blank}}. Plan: {{blank}}.",
+      "category": "Knee"
+    },
+    "kneeoa": {
+      "text": "The patient presents with {{blank}} knee osteoarthritis. Pain has been present for {{blank}} and is aggravated by weight-bearing and stairs. Radiographs demonstrate {{blank}} (Kellgren-Lawrence grade {{blank}}). Prior treatment: {{blank}}. Plan: {{blank}}.",
+      "category": "Knee"
+    },
+    "pfp": {
+      "text": "The patient presents with {{blank}} anterior knee pain consistent with patellofemoral pain syndrome, aggravated by stairs, squatting, and prolonged sitting. Patellar grind: {{blank}}. Plan: quadriceps and hip-strengthening program, activity modification, {{blank}}.",
+      "category": "Knee"
+    },
+    "patdis": {
+      "text": "The patient presents following {{blank}} patellar dislocation on {{blank}}; reduction was {{blank}}. Apprehension: {{blank}}. Imaging demonstrates {{blank}}. Prior instability episodes: {{blank}}. Plan: {{blank}}.",
+      "category": "Knee"
+    },
+    "quadtear": {
+      "text": "The patient presents following a sudden eccentric load with concern for {{blank}} extensor mechanism disruption. Straight-leg raise: {{blank}}. Palpable defect: {{blank}}. Imaging: {{blank}}. Plan: {{blank}}.",
+      "category": "Knee"
+    },
+    "bakers": {
+      "text": "The patient presents with {{blank}} posterior knee fullness consistent with a popliteal (Baker) cyst. Associated intra-articular pathology: {{blank}}. Plan: address underlying pathology; {{blank}}.",
+      "category": "Knee"
+    },
+    "itb": {
+      "text": "The patient presents with {{blank}} lateral knee pain consistent with iliotibial band syndrome, aggravated by running and downhill activity. Tenderness localizes over the lateral epicondyle of the femur. Plan: {{blank}}.",
+      "category": "Knee"
+    },
+    "kneeswell": {
+      "text": "The patient presents with {{blank}} knee effusion of {{blank}} duration. History of trauma: {{blank}}. Fever or systemic symptoms: {{blank}}. Aspiration performed: {{blank}}. Plan: {{blank}}.",
+      "category": "Knee"
+    },
+    "hipoa": {
+      "text": "The patient presents with {{blank}} hip osteoarthritis. Groin pain has been present for {{blank}}, aggravated by weight-bearing and rotation. Radiographs demonstrate {{blank}}. Prior treatment: {{blank}}. Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "fai": {
+      "text": "The patient presents with {{blank}} hip and groin pain consistent with femoroacetabular impingement. Symptoms are provoked by hip flexion and internal rotation (positive FADIR: {{blank}}). Imaging demonstrates {{blank}} morphology. Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "gtps": {
+      "text": "The patient presents with {{blank}} lateral hip pain consistent with greater trochanteric pain syndrome, worse with side-lying and stairs. Tenderness localizes over the greater trochanter. Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "hiplabrum": {
+      "text": "The patient presents with {{blank}} groin pain and mechanical symptoms consistent with acetabular labral pathology. FADIR: {{blank}}. MRA demonstrates {{blank}}. Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "hipfx": {
+      "text": "The patient presents following {{blank}} on {{blank}} with a {{blank}} hip fracture. The limb is {{blank}}. Radiographs demonstrate a {{blank}} fracture. Medical comorbidities: {{blank}}. Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "avn": {
+      "text": "The patient presents with {{blank}} hip pain concerning for osteonecrosis of the femoral head. Risk factors include {{blank}}. Imaging demonstrates {{blank}} (Ficat stage {{blank}}). Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "hamstring": {
+      "text": "The patient presents following an acute {{blank}} hamstring strain sustained during {{blank}}. Tenderness localizes to {{blank}}. Palpable defect: {{blank}}. Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "adductor": {
+      "text": "The patient presents with {{blank}} groin pain consistent with adductor strain, sustained during {{blank}}. Resisted adduction reproduces symptoms. Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "snaphip": {
+      "text": "The patient presents with {{blank}} snapping hip. The snap is reproduced with {{blank}} and is consistent with {{blank}} (external/internal/intra-articular) etiology. Pain: {{blank}}. Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "sijoint": {
+      "text": "The patient presents with {{blank}} posterior pelvic pain consistent with sacroiliac joint dysfunction. FABER and compression testing: {{blank}}. Plan: {{blank}}.",
+      "category": "Hip"
+    },
+    "tka": {
+      "text": "The patient presents for evaluation of {{blank}} end-stage knee osteoarthritis and consideration of total knee arthroplasty. Nonoperative measures attempted include {{blank}}. Risks, benefits, alternatives, and expected recovery were discussed. Plan: {{blank}}.",
+      "category": "Arthroplasty"
+    },
+    "tha": {
+      "text": "The patient presents for evaluation of {{blank}} end-stage hip osteoarthritis and consideration of total hip arthroplasty. Nonoperative measures attempted include {{blank}}. Risks including dislocation, leg-length difference, infection, and DVT were discussed. Plan: {{blank}}.",
+      "category": "Arthroplasty"
+    },
+    "tsa": {
+      "text": "The patient presents for evaluation of {{blank}} glenohumeral arthritis and consideration of shoulder arthroplasty. Rotator cuff status: {{blank}}. Anatomic versus reverse arthroplasty was discussed. Plan: {{blank}}.",
+      "category": "Arthroplasty"
+    },
+    "tkafu": {
+      "text": "The patient is {{blank}} post {{blank}} total knee arthroplasty. Range of motion measures {{blank}}. Wound: {{blank}}. Radiographs demonstrate {{blank}}. Plan: {{blank}}.",
+      "category": "Arthroplasty"
+    },
+    "thafu": {
+      "text": "The patient is {{blank}} post {{blank}} total hip arthroplasty. They are ambulating with {{blank}}. Wound: {{blank}}. Radiographs demonstrate well-fixed components with {{blank}}. Plan: {{blank}}.",
+      "category": "Arthroplasty"
+    },
+    "jointpre": {
+      "text": "Preoperative counseling for {{blank}} arthroplasty was completed on {{date}}. Medical optimization: {{blank}}. Dental clearance: {{blank}}. Home support and disposition plan: {{blank}}. The patient verbalized understanding and wishes to proceed.",
+      "category": "Arthroplasty"
+    },
+    "jointcheck": {
+      "text": "Routine surveillance visit {{blank}} post {{blank}} arthroplasty. The patient reports {{blank}} pain and {{blank}} functional limitation. Radiographs demonstrate {{blank}} without evidence of loosening or osteolysis. Plan: continue routine surveillance; return in {{blank}}.",
+      "category": "Arthroplasty"
+    },
+    "dvt": {
+      "text": "VTE prophylaxis following arthroplasty: {{blank}} for {{blank}} weeks. The patient was counseled on signs of DVT and PE including calf swelling, chest pain, and shortness of breath, and instructed to seek immediate care if these occur.",
+      "category": "Arthroplasty"
+    },
+    "pji": {
+      "text": "The patient presents {{blank}} post {{blank}} arthroplasty with concern for periprosthetic joint infection: {{blank}}. Labs: ESR {{blank}}, CRP {{blank}}. Aspiration: {{blank}}. Plan: {{blank}}.",
+      "category": "Arthroplasty"
+    },
+    "revision": {
+      "text": "The patient presents with a failed {{blank}} arthroplasty performed {{blank}}, now with {{blank}}. Workup for infection: {{blank}}. Radiographs demonstrate {{blank}}. Plan: revision arthroplasty discussion including {{blank}}.",
+      "category": "Arthroplasty"
+    },
+    "sprain": {
+      "text": "The patient presents following an inversion injury to the {{blank}} ankle on {{blank}}. Tenderness localizes to the {{blank}}. Ottawa criteria: {{blank}}. Weight-bearing status: {{blank}}. Plan: {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "achilles": {
+      "text": "The patient presents with {{blank}} posterior heel pain consistent with Achilles {{blank}} (insertional/midsubstance) tendinopathy. Thompson test: {{blank}}. Plan: eccentric strengthening program, heel lift, activity modification, {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "plantar": {
+      "text": "The patient presents with {{blank}} plantar heel pain consistent with plantar fasciitis, classically worst with the first steps of the morning. Tenderness localizes to the medial calcaneal tubercle. Plan: stretching program, night splint, supportive footwear, {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "bunion": {
+      "text": "The patient presents with a {{blank}} symptomatic hallux valgus deformity. Pain occurs with shoe wear over the medial eminence. Radiographs demonstrate HVA {{blank}} degrees and IMA {{blank}} degrees. Plan: {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "hammertoe": {
+      "text": "The patient presents with {{blank}} lesser toe deformity of the {{blank}} toe(s), {{blank}} (flexible/rigid). Corns or callosities: {{blank}}. Plan: {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "anklefx": {
+      "text": "The patient presents following {{blank}} on {{blank}} with a {{blank}} ankle fracture. Neurovascular exam: {{blank}}. Radiographs demonstrate {{blank}} (Weber {{blank}}). Mortise stability: {{blank}}. Plan: {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "flatfoot": {
+      "text": "The patient presents with {{blank}} progressive flatfoot deformity consistent with posterior tibial tendon dysfunction (stage {{blank}}). Single-limb heel rise: {{blank}}. Too-many-toes sign: {{blank}}. Plan: {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "morton": {
+      "text": "The patient presents with {{blank}} forefoot pain consistent with Morton neuroma of the {{blank}} webspace. Symptoms include burning pain and numbness worse in narrow shoes. Squeeze test: {{blank}}. Plan: {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "ankleoa": {
+      "text": "The patient presents with {{blank}} ankle arthritis, {{blank}} (post-traumatic/primary). Pain is aggravated by weight-bearing and uneven ground. Radiographs demonstrate {{blank}}. Plan: {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "stressfx": {
+      "text": "The patient presents with insidious-onset {{blank}} pain concerning for stress fracture of the {{blank}}. Training history: {{blank}}. Imaging: {{blank}}. Risk factors including bone health were reviewed. Plan: {{blank}}.",
+      "category": "Foot & Ankle"
+    },
+    "lbp": {
+      "text": "The patient presents with {{blank}} low back pain of {{blank}} duration without red-flag features (no fever, weight loss, saddle anesthesia, bowel or bladder dysfunction). Neurologic exam: {{blank}}. Plan: {{blank}}.",
+      "category": "Spine"
+    },
+    "sciatica": {
+      "text": "The patient presents with {{blank}} radicular leg pain in a {{blank}} distribution of {{blank}} duration. Straight-leg raise: {{blank}}. Motor and sensory exam: {{blank}}. Plan: {{blank}}.",
+      "category": "Spine"
+    },
+    "crad": {
+      "text": "The patient presents with {{blank}} neck pain radiating into the {{blank}} arm consistent with cervical radiculopathy at {{blank}}. Spurling test: {{blank}}. Motor, sensory, and reflex exam: {{blank}}. Plan: {{blank}}.",
+      "category": "Spine"
+    },
+    "stenosis": {
+      "text": "The patient presents with neurogenic claudication consistent with lumbar spinal stenosis: {{blank}} leg symptoms with standing and walking, relieved by sitting and forward flexion. Walking tolerance: {{blank}}. Imaging: {{blank}}. Plan: {{blank}}.",
+      "category": "Spine"
+    },
+    "spondy": {
+      "text": "The patient presents with {{blank}} back pain and imaging demonstrating {{blank}} spondylolisthesis at {{blank}} (grade {{blank}}). Neurologic symptoms: {{blank}}. Plan: {{blank}}.",
+      "category": "Spine"
+    },
+    "vcf": {
+      "text": "The patient presents with {{blank}} back pain following {{blank}} with a {{blank}} vertebral compression fracture. Neurologic exam: {{blank}}. Bone health assessment: {{blank}}. Plan: {{blank}}.",
+      "category": "Spine"
+    },
+    "neckpain": {
+      "text": "The patient presents with {{blank}} axial neck pain of {{blank}} duration without radicular features or myelopathic signs. Range of motion: {{blank}}. Plan: {{blank}}.",
+      "category": "Spine"
+    },
+    "scoliosis": {
+      "text": "The patient is a {{blank}}-year-old presenting for evaluation of scoliosis. Curve measures {{blank}} degrees ({{blank}} pattern). Skeletal maturity (Risser): {{blank}}. Plan: {{blank}}.",
+      "category": "Spine"
+    },
+    "myelopathy": {
+      "text": "The patient presents with signs concerning for cervical myelopathy: {{blank}} (hand clumsiness, gait imbalance). Hoffmann: {{blank}}. Gait: {{blank}}. Imaging: {{blank}}. Plan: {{blank}}.",
+      "category": "Spine"
+    },
+    "backstrain": {
+      "text": "The patient presents following {{blank}} with acute lumbar strain. Pain is {{blank}} without radiation or neurologic deficit. Plan: relative rest, anti-inflammatories as appropriate, early mobilization, {{blank}}.",
+      "category": "Spine"
+    },
+    "fx": {
+      "text": "The patient presents following {{blank}} on {{blank}} with a {{blank}} {{blank}} fracture. Neurovascular exam: {{blank}}. Skin: {{blank}}. Radiographs demonstrate {{blank}}. Plan: {{blank}}.",
+      "category": "Trauma"
+    },
+    "openfx": {
+      "text": "The patient presents with an open fracture of the {{blank}} (Gustilo-Anderson type {{blank}}). Antibiotics administered at {{blank}}; tetanus status: {{blank}}. Plan: urgent irrigation and debridement with {{blank}} fixation.",
+      "category": "Trauma"
+    },
+    "trauma": {
+      "text": "The patient presents following {{blank}} (MVA/fall/direct blow/sports) on {{blank}}. Primary survey: {{blank}}. Musculoskeletal injuries identified: {{blank}}. Plan: {{blank}}.",
+      "category": "Trauma"
+    },
+    "pelvisfx": {
+      "text": "The patient presents following a high-energy mechanism with a pelvic ring injury. Hemodynamic status: {{blank}}. Binder applied: {{blank}}. CT demonstrates {{blank}} ({{blank}} classification). Plan: {{blank}}.",
+      "category": "Trauma"
+    },
+    "femurfx": {
+      "text": "The patient presents following {{blank}} with a {{blank}} femoral shaft fracture. Neurovascular exam: {{blank}}. Associated injuries: {{blank}}. Plan: intramedullary nailing; timing {{blank}}.",
+      "category": "Trauma"
+    },
+    "tibplat": {
+      "text": "The patient presents following {{blank}} with a {{blank}} tibial plateau fracture (Schatzker type {{blank}}). Soft-tissue envelope: {{blank}}. Compartments: {{blank}}. Plan: {{blank}}.",
+      "category": "Trauma"
+    },
+    "compartment": {
+      "text": "The patient presents with concern for {{blank}} compartment syndrome of the {{blank}}. Pain with passive stretch: {{blank}}. Compartments are {{blank}}. Compartment pressures (if measured): {{blank}}. Plan: {{blank}}.",
+      "category": "Trauma"
+    },
+    "nonunion": {
+      "text": "The patient presents {{blank}} following {{blank}} fracture with ongoing pain and radiographic evidence of nonunion. Infection workup: {{blank}}. Metabolic and endocrine workup: {{blank}}. Plan: {{blank}}.",
+      "category": "Trauma"
+    },
+    "fragility": {
+      "text": "The patient sustained a fragility fracture of the {{blank}} from a ground-level fall. Bone health evaluation initiated: DEXA {{blank}}, vitamin D {{blank}}. The importance of secondary fracture prevention was discussed. Plan: {{blank}}.",
+      "category": "Trauma"
+    },
+    "poly": {
+      "text": "The patient is a polytrauma patient with the following orthopedic injuries: {{blank}}. Damage-control versus early total care considerations: {{blank}}. Current physiologic status: {{blank}}. Plan: {{blank}}.",
+      "category": "Trauma"
+    },
+    "bonelesion": {
+      "text": "The patient presents with a {{blank}} bone lesion of the {{blank}} found {{blank}} (incidentally/for pain). Radiographic features: {{blank}} (margins, matrix, periosteal reaction). Differential: {{blank}}. Plan: {{blank}}.",
+      "category": "Oncology"
+    },
+    "stmass": {
+      "text": "The patient presents with a {{blank}} soft-tissue mass of the {{blank}}, present for {{blank}}. Size: {{blank}}; depth relative to fascia: {{blank}}. Concerning features (size >5 cm, deep, enlarging, painful): {{blank}}. Plan: {{blank}}.",
+      "category": "Oncology"
+    },
+    "mets": {
+      "text": "The patient with known {{blank}} carcinoma presents with a {{blank}} osseous lesion of the {{blank}}. Mirels score: {{blank}}. Plan: {{blank}} in coordination with oncology and radiation oncology.",
+      "category": "Oncology"
+    },
+    "pathfx": {
+      "text": "The patient presents with a pathologic fracture of the {{blank}} through a {{blank}} lesion. Primary malignancy history: {{blank}}. Workup for lesion of unknown origin initiated: {{blank}}. Plan: {{blank}}.",
+      "category": "Oncology"
+    },
+    "enchondroma": {
+      "text": "Imaging demonstrates a {{blank}} lesion of the {{blank}} most consistent with enchondroma: {{blank}} chondroid matrix without aggressive features. No endosteal scalloping greater than two-thirds cortical thickness. Plan: surveillance radiographs in {{blank}}.",
+      "category": "Oncology"
+    },
+    "osteochondroma": {
+      "text": "The patient presents with a {{blank}} osseous prominence consistent with osteochondroma of the {{blank}}. Symptoms: {{blank}}. Imaging demonstrates corticomedullary continuity with the native bone. Plan: {{blank}}.",
+      "category": "Oncology"
+    },
+    "oncfu": {
+      "text": "Oncologic surveillance visit for {{blank}} treated with {{blank}} on {{blank}}. Current imaging: {{blank}}. Local recurrence or metastatic disease: {{blank}}. Plan: continue surveillance per protocol; next imaging in {{blank}}.",
+      "category": "Oncology"
+    },
+    "oncref": {
+      "text": "Given the concerning features of this lesion ({{blank}}), the patient is being referred to orthopedic oncology for further evaluation. Imaging and records will be forwarded. Biopsy, if indicated, should be performed by or in coordination with the treating oncologic surgeon.",
+      "category": "Oncology"
+    },
+    "biopsy": {
+      "text": "Biopsy planning for {{blank}} lesion of the {{blank}}: approach {{blank}}, in line with the definitive resection incision. Specimens for permanent pathology and culture. Plan discussed with pathology and radiology at {{blank}}.",
+      "category": "Oncology"
+    },
+    "lesion": {
+      "text": "Radiographic description: {{blank}} lesion of the {{blank}} measuring {{blank}}, {{blank}} (well-defined/ill-defined) margins, {{blank}} matrix, {{blank}} periosteal reaction, {{blank}} soft-tissue extension.",
+      "category": "Oncology"
+    },
+    "shoulderex": {
+      "text": "Shoulder exam ({{blank}}): inspection {{blank}}; palpation {{blank}}; active forward elevation {{blank}}, abduction {{blank}}, external rotation {{blank}}, internal rotation to {{blank}}; strength: supraspinatus {{blank}}, ER {{blank}}, subscapularis {{blank}}; special tests: {{blank}}; neurovascularly intact distally.",
+      "category": "Exam"
+    },
+    "kneeex": {
+      "text": "Knee exam ({{blank}}): effusion {{blank}}; range of motion {{blank}} to {{blank}} degrees; joint line tenderness {{blank}}; Lachman {{blank}}; pivot shift {{blank}}; McMurray {{blank}}; varus/valgus stability {{blank}}; patellar exam {{blank}}; neurovascularly intact distally.",
+      "category": "Exam"
+    },
+    "hipex": {
+      "text": "Hip exam ({{blank}}): gait {{blank}}; flexion {{blank}} degrees, internal rotation {{blank}}, external rotation {{blank}}; FADIR {{blank}}; FABER {{blank}}; trochanteric tenderness {{blank}}; limb lengths {{blank}}; neurovascularly intact distally.",
+      "category": "Exam"
+    },
+    "spineex": {
+      "text": "Spine exam: inspection {{blank}}; palpation {{blank}}; flexion/extension {{blank}}; straight-leg raise {{blank}}; motor {{blank}}; sensation {{blank}}; reflexes {{blank}}; long-tract signs (Hoffmann, clonus, Babinski) {{blank}}; gait {{blank}}.",
+      "category": "Exam"
+    },
+    "handex": {
+      "text": "Hand and wrist exam ({{blank}}): inspection {{blank}}; wrist flexion/extension {{blank}}; digital motion {{blank}}; grip strength {{blank}}; sensation in median, ulnar, and radial distributions {{blank}}; special tests: {{blank}}; capillary refill brisk.",
+      "category": "Exam"
+    },
+    "ankleex": {
+      "text": "Foot and ankle exam ({{blank}}): inspection and alignment {{blank}}; swelling {{blank}}; ankle dorsiflexion/plantarflexion {{blank}}; subtalar motion {{blank}}; tenderness {{blank}}; anterior drawer {{blank}}; strength {{blank}}; sensation intact; pulses {{blank}}.",
+      "category": "Exam"
+    },
+    "neuro": {
+      "text": "Neurovascular exam of the {{blank}} extremity: motor {{blank}}; sensation {{blank}}; reflexes {{blank}}; pulses {{blank}}; capillary refill {{blank}}.",
+      "category": "Exam"
+    },
+    "mskex": {
+      "text": "General musculoskeletal exam: gait {{blank}}; alignment {{blank}}; focal tenderness {{blank}}; range of motion of adjacent joints {{blank}}; skin intact without erythema or drainage; neurovascularly intact distally.",
+      "category": "Exam"
+    },
+    "gait": {
+      "text": "Gait assessment: {{blank}} (nonantalgic/antalgic favoring {{blank}}), assistive device {{blank}}, Trendelenburg {{blank}}, heel and toe walk {{blank}}.",
+      "category": "Exam"
+    },
+    "rom": {
+      "text": "Range of motion, {{blank}} {{blank}}: active {{blank}}; passive {{blank}}; painful arc {{blank}}; compared with contralateral side {{blank}}.",
+      "category": "Exam"
+    },
+    "injknee": {
+      "text": "PROCEDURE: {{blank}} knee intra-articular injection. Consent obtained; timeout performed. Site prepped in sterile fashion. Using a {{blank}} approach, {{blank}} of {{blank}} was injected without complication. The patient tolerated the procedure well. Post-injection precautions reviewed.",
+      "category": "Procedures"
+    },
+    "injsub": {
+      "text": "PROCEDURE: {{blank}} subacromial injection. Consent obtained; timeout performed. Site prepped in sterile fashion. Via posterolateral approach, {{blank}} of {{blank}} was injected into the subacromial space without complication. The patient tolerated the procedure well.",
+      "category": "Procedures"
+    },
+    "injtf": {
+      "text": "PROCEDURE: {{blank}} trigger finger injection, {{blank}} finger. Consent obtained. Site prepped in sterile fashion. {{blank}} of {{blank}} was injected at the A1 pulley without complication. The patient tolerated the procedure well.",
+      "category": "Procedures"
+    },
+    "injcts": {
+      "text": "PROCEDURE: {{blank}} carpal tunnel injection. Consent obtained. Site prepped in sterile fashion. Using standard landmarks ulnar to the palmaris longus, {{blank}} of {{blank}} was injected without paresthesias or complication. The patient tolerated the procedure well.",
+      "category": "Procedures"
+    },
+    "injcmc": {
+      "text": "PROCEDURE: {{blank}} thumb CMC joint injection. Consent obtained. Site prepped in sterile fashion. {{blank}} of {{blank}} was injected into the CMC joint without complication. The patient tolerated the procedure well.",
+      "category": "Procedures"
+    },
+    "aspknee": {
+      "text": "PROCEDURE: {{blank}} knee aspiration. Consent obtained; timeout performed. Site prepped in sterile fashion. {{blank}} mL of {{blank}} fluid was aspirated. Fluid sent for {{blank}}. The patient tolerated the procedure well.",
+      "category": "Procedures"
+    },
+    "cast": {
+      "text": "PROCEDURE: {{blank}} {{blank}} cast applied for {{blank}}. Skin inspected prior to application; padding applied. Post-application neurovascular exam intact. Cast care instructions and warning signs reviewed; the patient will return in {{blank}}.",
+      "category": "Procedures"
+    },
+    "splint": {
+      "text": "PROCEDURE: {{blank}} {{blank}} splint applied for {{blank}}. Post-application neurovascular exam intact. Elevation and compartment warning signs reviewed. Follow-up in {{blank}} for reassessment and possible cast conversion.",
+      "category": "Procedures"
+    },
+    "sutrem": {
+      "text": "Sutures/staples removed from the {{blank}} incision on {{date}}. Wound is well healed without erythema, drainage, or dehiscence. Steri-strips applied. Scar massage and sun protection reviewed.",
+      "category": "Procedures"
+    },
+    "woundck": {
+      "text": "Wound check of the {{blank}} incision: healing {{blank}}, erythema {{blank}}, drainage {{blank}}, induration {{blank}}. Sutures/staples: {{blank}}. Plan: {{blank}}.",
+      "category": "Procedures"
+    },
+    "opnote": {
+      "text": "OPERATIVE NOTE — Date: {{date}}. Preoperative diagnosis: {{blank}}. Postoperative diagnosis: same. Procedure: {{blank}}. Surgeon: {{blank}}. Anesthesia: {{blank}}. Findings: {{blank}}. Technique: {{blank}}. EBL: {{blank}}. Complications: none. Disposition: {{blank}}.",
+      "category": "Templates"
+    },
+    "consult": {
+      "text": "CONSULT NOTE — Thank you for this consultation regarding {{blank}}. HPI: {{blank}}. Exam: {{blank}}. Imaging: {{blank}}. Impression: {{blank}}. Recommendations: {{blank}}. We will follow along with you; please contact us with questions.",
+      "category": "Templates"
+    },
+    "fu": {
+      "text": "FOLLOW-UP — The patient returns {{blank}} after {{blank}}. Interval history: {{blank}}. Exam: {{blank}}. Imaging: {{blank}}. Assessment: {{blank}}. Plan: {{blank}}. Return: {{blank}}.",
+      "category": "Templates"
+    },
+    "newpt": {
+      "text": "NEW PATIENT — The patient is a {{blank}}-year-old {{blank}} presenting with {{blank}} of {{blank}} duration. History: {{blank}}. Exam: {{blank}}. Imaging: {{blank}}. Assessment: {{blank}}. Plan and shared decision-making: {{blank}}.",
+      "category": "Templates"
+    },
+    "preop": {
+      "text": "PREOPERATIVE VISIT — Planned procedure: {{blank}} on {{blank}}. Consent reviewed and signed. NPO instructions, medication management ({{blank}}), and day-of-surgery logistics reviewed. Questions answered; the patient wishes to proceed.",
+      "category": "Templates"
+    },
+    "postop": {
+      "text": "POSTOPERATIVE VISIT — The patient is {{blank}} post {{blank}}. Pain control: {{blank}}. Wound: {{blank}}. Range of motion/weight-bearing per protocol: {{blank}}. Radiographs: {{blank}}. Plan: {{blank}}. Return: {{blank}}.",
+      "category": "Templates"
+    },
+    "mri": {
+      "text": "MRI of the {{blank}} is requested to evaluate {{blank}}. Conservative management to date includes {{blank}} without adequate improvement. Results will direct {{blank}} (operative vs continued nonoperative) management.",
+      "category": "Templates"
+    },
+    "ptref": {
+      "text": "Physical therapy referral: {{blank}}, {{blank}} times weekly for {{blank}} weeks. Diagnosis: {{blank}}. Focus: {{blank}}. Precautions/restrictions: {{blank}}. Progress to be reassessed at next visit.",
+      "category": "Templates"
+    },
+    "worknote": {
+      "text": "WORK STATUS — Seen on {{date}} for {{blank}}. The patient may return to work on {{blank}} with the following restrictions: {{blank}}. Restrictions anticipated to remain in place until {{blank}}, when they will be reassessed.",
+      "category": "Templates"
+    },
+    "dci": {
+      "text": "DISCHARGE INSTRUCTIONS — Diagnosis: {{blank}}. Activity: {{blank}}. Weight-bearing: {{blank}}. Wound care: {{blank}}. Medications: {{blank}}. Warning signs requiring urgent attention: increasing pain, fever, drainage, numbness, or chest pain/shortness of breath. Follow-up: {{blank}}.",
+      "category": "Templates"
+    }
+  }
+}
