@@ -15,7 +15,7 @@ a = Analysis(
     ["launcher.py"],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[("quickphrase/packs", "quickphrase/packs")],
     hiddenimports=[
         # pynput loads its platform backend dynamically; be explicit so
         # PyInstaller doesn't miss it.

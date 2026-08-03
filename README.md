@@ -55,6 +55,14 @@ Thanks for reaching out about {{blank}}. I'll get back to you by {{blank}}.
 
 After expansion the caret lands on the first blank. Type your text, press **Tab**, and the caret jumps to the next blank; the final Tab lands at the end of the snippet. Moving the caret yourself (arrows, clicking, Esc) ends the fill-in session. Try the built-in `;intro` phrase.
 
+## Phrase packs (share your library)
+
+The **⇅ Packs** button lets you import and export phrase collections as JSON files, so people in different fields can swap in their own libraries:
+
+- **Export pack to file…** — pick categories, save a `.json` pack, send it to a colleague.
+- **Import pack from file…** — load someone else's pack; you choose whether conflicting triggers keep your version or take theirs (your favorites are never lost).
+- **Load built-in: Orthopedics Starter** — 130 documentation templates, 10 per subspecialty category (Hand & Wrist, Elbow, Shoulder, Knee, Hip, Arthroplasty, Foot & Ankle, Spine, Trauma, Oncology, Exam, Procedures, Templates), all with `{{blank}}` Tab-stop fill-ins. These are generic scaffolds modeled on standard practice patterns — review and adapt them before clinical use.
+
 ## Categories & dark mode
 
 Every phrase has a category (type a new name in the Category box to create one) and the list can be filtered with the "Show" dropdown. The 🌙/☀ button toggles dark mode; the preference is saved.
