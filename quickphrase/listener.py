@@ -13,12 +13,52 @@ session; typing inside a blank is just normal typing.
 
 from __future__ import annotations
 
+import contextlib
 import queue
+import sys
 import threading
 import time
 from typing import Callable, List, Optional, Tuple
 
 from pynput import keyboard, mouse
+
+
+def _patch_darwin_layout_cache() -> None:
+    """Work around a macOS crash (pynput issues #511/#512).
+
+    pynput's listener thread reads the keyboard layout via Apple's TIS/TSM
+    APIs, but modern macOS requires those calls to happen on the main
+    thread — off-main-thread calls die in dispatch_assert_queue
+    (EXC_BAD_INSTRUCTION in HIToolbox). This module is imported on the main
+    thread, so we capture the layout context once HERE and monkeypatch
+    pynput to serve the cached value to every later caller, keeping the
+    listener thread away from the forbidden APIs entirely.
+
+    Trade-off: switching keyboard layouts/input sources on macOS requires an
+    app restart to be picked up. Wrapped in try/except so a future pynput
+    that fixes this internally (or any API change) degrades gracefully.
+    """
+    if sys.platform != "darwin":
+        return
+    try:
+        from pynput._util import darwin as _du
+        cm = _du.keycode_context()
+        cached = cm.__enter__()  # intentionally never exited; app-lifetime
+        @contextlib.contextmanager
+        def _cached_keycode_context():
+            yield cached
+        _du.keycode_context = _cached_keycode_context
+        try:  # also rebind any direct import in the darwin keyboard backend
+            from pynput.keyboard import _darwin as _kbd
+            if hasattr(_kbd, "keycode_context"):
+                _kbd.keycode_context = _cached_keycode_context
+        except Exception:
+            pass
+    except Exception:
+        pass  # never block startup over the workaround itself
+
+
+_patch_darwin_layout_cache()
 
 from .engine import Expansion, ExpansionEngine
 from .injector import Injector
