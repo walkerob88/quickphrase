@@ -63,6 +63,48 @@ _patch_darwin_layout_cache()
 from .engine import Expansion, ExpansionEngine
 from .injector import Injector
 
+
+def darwin_permission_status() -> dict:
+    """On macOS, report whether the two required permissions are granted.
+
+    Returns {} on other platforms. Values may be None if the check API
+    is unavailable in this build.
+    """
+    if sys.platform != "darwin":
+        return {}
+    status: dict = {}
+    try:
+        import Quartz
+        status["input_monitoring"] = bool(Quartz.CGPreflightListenEventAccess())
+    except Exception:
+        status["input_monitoring"] = None
+    try:
+        from ApplicationServices import AXIsProcessTrusted
+        status["accessibility"] = bool(AXIsProcessTrusted())
+    except Exception:
+        status["accessibility"] = None
+    return status
+
+
+def darwin_request_permissions() -> None:
+    """Trigger the official macOS permission prompts. Unlike manually adding
+    an (unsigned) app in System Settings, this registers a TCC entry that
+    actually matches the running process."""
+    if sys.platform != "darwin":
+        return
+    try:
+        import Quartz
+        if not Quartz.CGPreflightListenEventAccess():
+            Quartz.CGRequestListenEventAccess()
+    except Exception:
+        pass
+    try:
+        from ApplicationServices import (AXIsProcessTrustedWithOptions,
+                                         kAXTrustedCheckOptionPrompt)
+        AXIsProcessTrustedWithOptions({kAXTrustedCheckOptionPrompt: True})
+    except Exception:
+        pass
+
 # Keys that mean "the caret moved / context changed": forget the buffer.
 RESET_KEYS = {
     keyboard.Key.esc, keyboard.Key.left, keyboard.Key.right, keyboard.Key.up,
@@ -91,6 +133,7 @@ class ExpanderService:
         self.engine = engine
         self.injector = Injector()
         self.on_expansion = on_expansion
+        self.keys_seen = 0  # diagnostic: total key events received
         self._injecting = threading.Event()
         self._queue: "queue.Queue[Tuple[str, object]]" = queue.Queue()
         self._tab_stops: List[int] = []          # pending {{blank}} jumps
@@ -141,6 +184,7 @@ class ExpanderService:
     def _on_press(self, key) -> None:
         if self._injecting.is_set() or not self._running:
             return
+        self.keys_seen += 1
         try:
             if key == keyboard.Key.tab and self._tab_stops:
                 # Jump to the next blank instead of typing a tab.

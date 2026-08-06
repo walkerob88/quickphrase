@@ -8,6 +8,7 @@ phrase cards, each with trigger, category tag, preview, star, Edit, Delete.
 from __future__ import annotations
 
 import os
+import sys
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
@@ -71,6 +72,7 @@ class QuickPhraseApp:
         self._build_static_ui()
         self._render_all()
         self.service.start()
+        root.after(800, self._check_darwin_permissions)
         root.protocol("WM_DELETE_WINDOW", self._on_close)
 
     # -- static skeleton ----------------------------------------------------
@@ -128,9 +130,9 @@ class QuickPhraseApp:
         self.root.bind_all("<Button-4>", self._on_wheel)
         self.root.bind_all("<Button-5>", self._on_wheel)
 
-        self.hint = tk.Label(self.root, anchor="w",
-                             text=f"Type  {PREFIX}trigger  anywhere to expand — "
-                                  "Tab jumps between {{blank}} fill-ins")
+        self._default_hint = (f"Type  {PREFIX}trigger  anywhere to expand — "
+                              "Tab jumps between {{blank}} fill-ins")
+        self.hint = tk.Label(self.root, anchor="w", text=self._default_hint)
         self.hint.pack(fill="x", padx=14, pady=(0, 8))
 
     # -- rendering ----------------------------------------------------------
@@ -318,6 +320,37 @@ class QuickPhraseApp:
             del self.phrases[trigger]
             self._persist()
             self._render_cards()
+
+    def _check_darwin_permissions(self, already_requested: bool = False) -> None:
+        """macOS only: verify Input Monitoring + Accessibility are granted.
+        If not, fire the official system prompts (which register a TCC entry
+        that matches this exact binary) and show a persistent warning."""
+        if sys.platform != "darwin":
+            return
+        from .listener import darwin_permission_status, darwin_request_permissions
+        status = darwin_permission_status()
+        missing = [label for key, label in
+                   (("input_monitoring", "Input Monitoring"),
+                    ("accessibility", "Accessibility"))
+                   if status.get(key) is False]
+        c = self._theme()
+        if missing:
+            if not already_requested:
+                darwin_request_permissions()
+            self.hint.configure(
+                fg=c["bad"],
+                text="⚠ macOS: grant " + " and ".join(missing) +
+                     " to QuickPhrase in System Settings → Privacy & Security, "
+                     "then quit (Cmd-Q) and reopen the app.")
+            self.root.after(4000,
+                            lambda: self._check_darwin_permissions(True))
+        elif self.service.running and self.service.keys_seen == 0:
+            # Permissions look granted but no events yet; keep watching.
+            self.root.after(4000,
+                            lambda: self._check_darwin_permissions(True))
+            self.hint.configure(fg=c["muted"], text=self._default_hint)
+        else:
+            self.hint.configure(fg=c["muted"], text=self._default_hint)
 
     def _on_expansion(self, expansion) -> None:
         self._expansion_count += 1
