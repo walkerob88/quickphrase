@@ -22,6 +22,8 @@ a = Analysis(
         "pynput.keyboard._win32", "pynput.mouse._win32",
         "pynput.keyboard._darwin", "pynput.mouse._darwin",
         "pynput.keyboard._xorg", "pynput.mouse._xorg",
+        # macOS permission preflight/request APIs (pyobjc)
+        "Quartz", "ApplicationServices", "HIServices",
     ],
     excludes=["pytest"],
     noarchive=False,
